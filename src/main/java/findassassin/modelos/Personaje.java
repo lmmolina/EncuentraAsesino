@@ -2,6 +2,8 @@ package findassassin.modelos;
 
 import jakarta.persistence.*;
 
+import java.util.Random;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Personaje {
@@ -35,6 +37,17 @@ public class Personaje {
     }
 
     public Personaje() {
+        Random r = new Random();
+        this.altura = r.nextInt(140, 210);
+        this.peso = r.nextInt(30, 120);
+        this.edad = r.nextInt(18, 90);
+        this.sexo = r.nextBoolean() ? 'F' : 'M';
+        this.velloFacial = r.nextBoolean();
+        this.gafas = r.nextBoolean();
+        this.colorPelo = obtenerColorDePelo(r.nextInt(7));
+        this.tonoPiel = obtenerColorDePiel(r.nextInt(7));
+        this.nacionalidad = obtenerNacionalidad(r.nextInt(12));
+        this.complexion = obtenerComplexion(r.nextInt(5));
     }
 
     public int getId() {
@@ -131,5 +144,87 @@ public class Personaje {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    private String obtenerColorDePelo(int codigo) {
+        switch (codigo) {
+            case 1:
+                return "Negro";
+            case 2:
+                return "Castaño";
+            case 3:
+                return "Rubio";
+            case 4:
+                return "Pelirrojo";
+            case 5:
+                return "Gris";
+            case 6:
+                return "Blanco";
+            default:
+                return "Calvo";
+        }
+    }
+
+    public String obtenerColorDePiel(int codigo) {
+        switch (codigo) {
+            case 1:
+                return "Blanco";
+            case 2:
+                return "Negro";
+            case 3:
+                return "Moreno";
+            case 4:
+                return "Asiático";
+            case 5:
+                return "Indio";
+            case 6:
+                return "Latino";
+            default:
+                return "Medio Oriente";
+        }
+    }
+
+    public String obtenerNacionalidad(int codigo) {
+        switch (codigo) {
+            case 1:
+                return "Cuba";
+            case 2:
+                return "España";
+            case 3:
+                return "Venezuela";
+            case 4:
+                return "Ecuador";
+            case 5:
+                return "Francia";
+            case 6:
+                return "Alemania";
+            case 7:
+                return "Egipto";
+            case 8:
+                return "Marruecos";
+            case 9:
+                return "India";
+            case 10:
+                return "Pakistán";
+            case 11:
+                return "China";
+            default:
+                return "Japón";
+        }
+    }
+
+    public String obtenerComplexion(int codigo) {
+        switch (codigo) {
+            case 1:
+                return "Delgada";
+            case 2:
+                return "Media";
+            case 3:
+                return "Atlética";
+            case 4:
+                return "Robusta";
+            default:
+                return "Obesa";
+        }
     }
 }
