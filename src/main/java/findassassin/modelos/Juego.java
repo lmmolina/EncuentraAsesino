@@ -12,7 +12,7 @@ public class Juego {
     @ManyToMany
     @JoinTable(
             name = "usuario_juego",
-            joinColumns = @JoinColumn(name = "juego_id"),
+            joinColumns = @JoinColumn(name = "juego_id") ,
             inverseJoinColumns = @JoinColumn(name = "usuario_id")
     )
     private List<Usuario> usuarios;
