@@ -67,4 +67,8 @@ public class Usuario {
     public void setPuntos(int puntos) {
         this.puntos = puntos;
     }
+
+    public Personaje getPersonaje() {
+        return personaje;
+    }
 }
