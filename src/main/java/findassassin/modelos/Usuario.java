@@ -20,7 +20,7 @@ public class Usuario {
     private String correo;
     private int puntos;
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id_personaje")
     private Personaje personaje;
 
     public Usuario(String uid, String nombre, String correo, int puntos) {
