@@ -1,7 +1,12 @@
 package findassassin.modelos;
 
+import feign.codec.Decoder;
+import feign.form.FormEncoder;
+import findassassin.servicios.ImageGenerator;
 import jakarta.persistence.*;
+import org.springframework.scheduling.annotation.Async;
 
+import java.beans.Encoder;
 import java.util.Random;
 
 @Entity
@@ -21,6 +26,9 @@ public class Personaje {
     private String nacionalidad;
     private String complexion;
     private String imagen;
+    @OneToOne
+    @JoinColumn(name = "asesino_id")
+    private Asesino asesino;
 
     public Personaje(int id, int altura, int peso, int edad, char sexo, boolean velloFacial, boolean gafas, String colorPelo, String tonoPiel, String nacionalidad, String complexion) {
         this.id = id;
@@ -35,7 +43,19 @@ public class Personaje {
         this.nacionalidad = nacionalidad;
         this.complexion = complexion;
     }
-
+    public Personaje(Personaje p) {
+        this.id = p.id;
+        this.altura = p.altura;
+        this.peso = p.peso;
+        this.edad = p.edad;
+        this.sexo = p.sexo;
+        this.velloFacial = p.velloFacial;
+        this.gafas = p.gafas;
+        this.colorPelo = p.colorPelo;
+        this.tonoPiel = p.tonoPiel;
+        this.nacionalidad = p.nacionalidad;
+        this.complexion = p.complexion;
+    }
     public Personaje() {
         Random r = new Random();
         this.altura = r.nextInt(140, 210);
@@ -146,6 +166,15 @@ public class Personaje {
         this.imagen = imagen;
     }
 
+
+    public Asesino getAsesino() {
+        return asesino;
+    }
+
+    public void setAsesino(Asesino asesino) {
+        this.asesino = asesino;
+    }
+
     private String obtenerColorDePelo(int codigo) {
         switch (codigo) {
             case 1:
@@ -225,6 +254,42 @@ public class Personaje {
                 return "Robusta";
             default:
                 return "Obesa";
+        }
+    }
+
+    public void cambiarAtributoRandom(String atributo) {
+        Random r = new Random();
+        switch (atributo) {
+            case "altura":
+                this.altura = r.nextInt(140, 210);
+                break;
+            case "peso":
+                this.peso = r.nextInt(30, 120);
+                break;
+            case "edad":
+                this.edad = r.nextInt(18, 90);
+                break;
+            case "sexo":
+                this.sexo = r.nextBoolean() ? 'F' : 'M';
+                break;
+            case "vellofacial":
+                this.velloFacial = r.nextBoolean();
+                break;
+            case "gafas":
+                this.gafas = r.nextBoolean();
+                break;
+            case "colorpelo":
+                this.colorPelo = obtenerColorDePelo(r.nextInt(7));
+                break;
+            case "tonopiel":
+                this.tonoPiel = obtenerColorDePiel(r.nextInt(7));
+                break;
+            case "nacionalidad":
+                this.nacionalidad = obtenerNacionalidad(r.nextInt(12));
+                break;
+            case "complexion":
+                this.complexion = obtenerComplexion(r.nextInt(5));
+                break;
         }
     }
 }

@@ -96,4 +96,8 @@ public class Juego {
     public List<Filtros> getAcciones() {
         return acciones;
     }
+
+    public void AvanzarTurno(){
+        turnos++;
+    }
 }

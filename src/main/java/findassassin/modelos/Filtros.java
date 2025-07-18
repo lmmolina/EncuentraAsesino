@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
@@ -11,14 +12,21 @@ public class Filtros {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotEmpty
     private String id_usuario;
     @Pattern(regexp = "altura|peso|edad|sexo|vellofacial|gafas|colorpelo|tonopiel|nacionalidad|complexion")
     private String campo;
-    private Object valor;
+    private String valor;
     private int turno;
 
-    public Filtros(long id, String campo, Object valor) {
+    public Filtros(long id, String campo, String valor) {
         this.id = id;
+        this.campo = campo;
+        this.valor = valor;
+    }
+
+
+    public Filtros(String campo, String valor) {
         this.campo = campo;
         this.valor = valor;
     }
@@ -46,7 +54,7 @@ public class Filtros {
         return valor;
     }
 
-    public void setValor(Object valor) {
+    public void setValor(String valor) {
         this.valor = valor;
     }
 

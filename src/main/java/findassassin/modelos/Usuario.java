@@ -71,4 +71,8 @@ public class Usuario {
     public Personaje getPersonaje() {
         return personaje;
     }
+
+    public void setPersonaje(Personaje personaje) {
+        this.personaje = personaje;
+    }
 }

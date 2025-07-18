@@ -3,20 +3,23 @@ package findassassin.controladores;
 import findassassin.modelos.Usuario;
 import findassassin.repositorios.PersonajeRepository;
 import findassassin.repositorios.UsuarioRepository;
-import findassassin.servicios.JuegoService;
+import findassassin.servicios.ImageGenerator;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioControler {
     private final UsuarioRepository userRepo;
     private final PersonajeRepository perRepo;
+    private final ImageGenerator generator;
 
-    public UsuarioControler(UsuarioRepository userRepo, PersonajeRepository perRepo) {
+    public UsuarioControler(UsuarioRepository userRepo, PersonajeRepository perRepo, ImageGenerator generator) {
         this.userRepo = userRepo;
         this.perRepo = perRepo;
+        this.generator = generator;
     }
 
     @GetMapping("/{id}")
@@ -32,9 +35,20 @@ public class UsuarioControler {
 
     @PostMapping("/")
     public ResponseEntity<?> InsertarUsuario(@Valid @RequestBody Usuario user) {
+        Usuario userbd= userRepo.findByCorreo(user.getCorreo());
+        if(userbd!=null){
+            return ResponseEntity.status(201).body(userbd);
+        }
         perRepo.save(user.getPersonaje());
+        try {
+            generator.generateAndSaveImage(user.getPersonaje(),user.getUid());
+            user.getPersonaje().setImagen("imagen/" + user.getUid()+".jpeg");
+        } catch (Exception e) {
+            System.out.println("Error generando la imagen.");
+            e.printStackTrace();
+        }
         userRepo.save(user);
-        return ResponseEntity.status(201).body(user.getUid());
+        return ResponseEntity.status(201).body(user);
     }
 
     @PutMapping("/")
